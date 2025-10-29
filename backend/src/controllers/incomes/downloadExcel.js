@@ -1,6 +1,8 @@
 import Income from "../../models/income.js";
 import xlsx from "xlsx";
 
+import fs from "fs";
+
 const downloadIncomeExcel = async (req, res) => {
   const userId = req.user.id;
 
@@ -31,7 +33,7 @@ const downloadIncomeExcel = async (req, res) => {
       }
 
       // Delete the file after download (optional)
-      const fs = require("fs");
+
       fs.unlinkSync(filename);
     });
   } catch (error) {

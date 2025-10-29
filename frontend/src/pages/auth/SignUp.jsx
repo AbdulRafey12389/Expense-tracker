@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import AuthLayout from "../../components/authLayout/AuthLayout";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/input";
@@ -6,6 +6,11 @@ import { validateEmail } from "../../utils/helper";
 
 import { useState } from "react";
 import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { UserContext } from "../../context/UserContext";
+// import { FaCircle, FaCircleCheck } from "react-icons/fa6";
+import { TbCircleDotted } from "react-icons/tb";
 
 const SignUp = () => {
   const [profilePic, setProfilePic] = useState(null);
@@ -14,33 +19,90 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const { updateUser } = useContext(UserContext);
 
   // Handle Sign Up Form Submit
   const handleSignUp = async (e) => {
     e.preventDefault();
-    let profileImageUrl = "";
+    setLoading(true);
 
     if (!fullName) {
       setError("Please enter your name");
+      setLoading(false);
       return;
     }
 
     if (!validateEmail(email)) {
       setError("Please enter a valid email address");
+      setLoading(false);
       return;
     }
 
     if (!password) {
       setError("Please enter the password");
+      setLoading(false);
       return;
     }
 
     if (password.length < 6) {
       setError("Password must be at least 6 characters long");
+      setLoading(false);
       return;
     }
 
     setError("");
+
+    // SignUp API Call with Image Upload
+    try {
+      let profileImageUrl = "";
+
+      // Upload profile image if exists
+      if (profilePic) {
+        const imageFormData = new FormData();
+        imageFormData.append("image", profilePic);
+
+        const imageUploadResponse = await axiosInstance.post(
+          API_PATHS.IMAGE.UPLOAD_IMAGE,
+          imageFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (imageUploadResponse.data.imageUrl) {
+          profileImageUrl = imageUploadResponse.data.imageUrl;
+        }
+      }
+
+      // Register user with profile image
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        fullName,
+        email,
+        password,
+        profileImageUrl,
+      });
+
+      const { token, user } = response.data;
+
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user);
+        setLoading(false);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setLoading(false);
+        setError(error.response.data.message);
+      } else {
+        setLoading(false);
+        setError("Something went wrong. Please try again.");
+      }
+    }
   };
 
   return (
@@ -57,17 +119,6 @@ const SignUp = () => {
           {/* Profile Picture Upload */}
 
           <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
-          {/* <div className="mb-4">
-            <label className="text-[13px] text-slate-800 font-medium block mb-2">
-              Profile Picture (Optional)
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePicChange}
-              className="w-full border border-slate-300 rounded-md px-3 py-2"
-            />
-          </div> */}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
@@ -97,9 +148,10 @@ const SignUp = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 mt-4"
+            className="w-full bg-blue-600  text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 mt-4 flex items-center justify-center"
+            disabled={loading}
           >
-            Sign Up
+            {loading ? <TbCircleDotted className="animate-spin" /> : "Sign Up"}
           </button>
         </form>
 

@@ -1,38 +1,67 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import AuthLayout from "../../components/authLayout/AuthLayout";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/input";
 import { validateEmail } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { UserContext } from "../../context/UserContext";
+import { TbCircleDotted } from "react-icons/tb";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
+  const { updateUser } = useContext(UserContext);
+
   // Handle Login Form Submit
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
+      setLoading(false);
       return;
     }
 
     if (!password) {
       setError("Please enter your password.");
+      setLoading(false);
       return;
     }
 
     setError("");
 
-    // LOGIN API CALL
+    // Login API Call
+    try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+      const { token, user } = response.data;
 
-    // Add authentication logic here
-    // If successful:
-    // navigate('/dashboard');
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user);
+        setLoading(false);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setLoading(false);
+        setError(error.response.data.message);
+      } else {
+        setLoading(false);
+        setError("Something went wrong. Please try again.");
+      }
+    }
   };
 
   return (
@@ -64,9 +93,10 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 mt-4"
+            className="w-full bg-blue-600  text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 mt-4 flex items-center justify-center"
+            disabled={loading}
           >
-            Log In
+            {loading ? <TbCircleDotted className="animate-spin" /> : "Sign In"}
           </button>
 
           <p className="text-sm text-center text-slate-600 mt-4">

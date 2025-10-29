@@ -12,7 +12,7 @@ import authentication from "../middlewares/authentication.js";
 const router = Router();
 
 router.post("/add", addIncome);
-router.get("/get-icome", getAllIncome);
+router.get("/get", getAllIncome);
 router.get("/download-excel", downloadIncomeExcel);
 router.delete("/:id", deleteIncomeById);
 
