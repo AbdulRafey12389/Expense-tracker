@@ -7,9 +7,9 @@ const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  //   if (!user) {
-  //     navigate("/login");
-  //   }
+  if (!user) {
+    navigate("/login");
+  }
 
   const handleNavigation = (path) => {
     navigate(path);

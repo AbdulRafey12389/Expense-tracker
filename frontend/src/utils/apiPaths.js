@@ -1,4 +1,9 @@
-export const BASE_URL = "http://localhost:5000";
+export const BASE_URL =
+  import.meta.env.VITE_NODE_ENV === "development"
+    ? "http://localhost:5000"
+    : import.meta.env.VITE_BASE_URI;
+
+console.log(import.meta.env.VITE_NODE_ENV);
 
 // utils/apiPaths.js
 export const API_PATHS = {

@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 // import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
+import { useNavigate } from "react-router-dom";
 
 const Income = () => {
   const [incomes, setIncomes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
+  const navigate = useNavigate();
+
+  const { user } = useContext(UserContext);
+
+  if (!user) {
+    navigate("/login");
+  }
 
   useEffect(() => {
     fetchIncomes();

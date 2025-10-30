@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState({
     totalBalance: 91100,
     totalIncome: 98200,
@@ -60,6 +62,12 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const { user } = useContext(UserContext);
+
+  if (!user) {
+    navigate("/login");
+  }
+
   useEffect(() => {
     // Uncomment to fetch real data
     fetchDashboardData();
@@ -108,19 +116,6 @@ const Dashboard = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Header Section */}
-      {/* <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Expense Tracker
-        </h1>
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold text-gray-700">
-            {user?.fullName || "Mike William"}
-          </h2>
-        </div>
-      </div> */}
-
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Financial Overview */}
         <div className="lg:col-span-2 space-y-6">

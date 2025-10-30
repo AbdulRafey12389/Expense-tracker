@@ -11,6 +11,8 @@ import routes from "./src/routes/index.js";
 
 dotenv.config();
 
+connectToDatabase();
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -29,8 +31,6 @@ app.use(express.urlencoded({ extended: true }));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-connectToDatabase();
 
 app.use("/api/v1", routes);
 

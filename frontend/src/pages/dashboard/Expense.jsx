@@ -1,11 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
+import { UserContext } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Expense = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
+  const navigate = useNavigate();
+
+  const { user } = useContext(UserContext);
+
+  if (!user) {
+    navigate("/login");
+  }
 
   useEffect(() => {
     fetchExpenses();
@@ -112,12 +121,9 @@ const Expense = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Expense Tracker
-        </h1>
-        <h2 className="text-2xl font-semibold text-gray-700">
+        <h1 className="text-3xl font-semibold text-gray-700">
           Expense Overview
-        </h2>
+        </h1>
         <p className="text-gray-600 mt-2">
           Track your spending trends over time and gain insights into where your
           money goes.
