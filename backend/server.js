@@ -16,14 +16,14 @@ connectToDatabase();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(
-  cors({
-    origin: process.env.Client_URL || "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors());
+
+// {
+//     origin: process.env.Client_URL || "*",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true,
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   }
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
