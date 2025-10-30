@@ -1,13 +1,11 @@
-
 import Income from "../../models/income.js";
 import xlsx from "xlsx";
-
-import fs from "fs";
 
 const downloadIncomeExcel = async (req, res) => {
   const userId = req.user.id;
 
   try {
+    // Fetch income data from MongoDB
     const incomes = await Income.find({ userId }).sort({ date: -1 });
 
     // Prepare data for Excel
@@ -18,25 +16,26 @@ const downloadIncomeExcel = async (req, res) => {
       Icon: item.icon || "💰",
     }));
 
+    // Create a new workbook and sheet
     const wb = xlsx.utils.book_new();
     const ws = xlsx.utils.json_to_sheet(data);
     xlsx.utils.book_append_sheet(wb, ws, "Income");
 
-    // Generate filename with timestamp
-    const filename = `income_details_${Date.now()}.xlsx`;
-    xlsx.writeFile(wb, filename);
+    // ✅ Write workbook to memory buffer instead of saving to disk
+    const buffer = xlsx.write(wb, { type: "buffer", bookType: "xlsx" });
 
-    // Download the file
-    res.download(filename, (err) => {
-      if (err) {
-        console.error("Download error:", err);
-        return res.status(500).json({ message: "Error downloading file" });
-      }
+    // ✅ Set proper headers for download
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=income_details_${Date.now()}.xlsx`
+    );
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
 
-      // Delete the file after download (optional)
-
-      fs.unlinkSync(filename);
-    });
+    // ✅ Send the Excel buffer to the client
+    res.send(buffer);
   } catch (error) {
     console.error("Download income Excel error:", error);
     res.status(500).json({ message: "Server Error" });
