@@ -1,6 +1,6 @@
 import XLSX from "xlsx";
 
-export const downloadExpenseExcel = async (req, res) => {
+const downloadExpenseExcel = async (req, res) => {
   try {
     // Suppose you fetched data from MongoDB
     const expenses = [
@@ -32,6 +32,8 @@ export const downloadExpenseExcel = async (req, res) => {
     res.status(500).json({ message: "Error generating Excel file" });
   }
 };
+
+export default downloadExpenseExcel;
 
 // import Expense from "../../models/expense.js";
 // import xlsx from "xlsx";
