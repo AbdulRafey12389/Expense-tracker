@@ -1,13 +1,13 @@
 import Expense from "../../models/expense.js";
 
-// Add Expense
+
 export const addExpense = async (req, res) => {
   const userId = req.user.id;
 
   try {
     const { icon, category, amount, date } = req.body;
 
-    // Validation
+   
     if (!icon || !category || !amount) {
       return res.status(400).json({
         success: false,

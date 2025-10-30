@@ -69,7 +69,6 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    // Uncomment to fetch real data
     fetchDashboardData();
   }, []);
 
@@ -131,7 +130,6 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Total Income Card */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
               <h3 className="text-sm font-medium text-gray-500 mb-2">
                 Total Income
@@ -141,7 +139,6 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Total Expenses Card */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
               <h3 className="text-sm font-medium text-gray-500 mb-2">
                 Total Expenses
@@ -152,7 +149,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Recent Transactions */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-semibold text-gray-900">
@@ -203,7 +199,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Last 60 Days Income */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 mb-6">
               Last 60 Days Income
@@ -239,9 +234,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Right Column - Additional Info */}
         <div className="space-y-6">
-          {/* Last 30 Days Expenses */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 mb-6">
               Last 30 Days Expenses
@@ -276,7 +269,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Financial Overview Summary */}
           <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white">
             <h3 className="text-lg font-semibold mb-4">Financial Overview</h3>
             <div className="space-y-3">

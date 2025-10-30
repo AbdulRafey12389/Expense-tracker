@@ -9,7 +9,7 @@ import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { UserContext } from "../../context/UserContext";
-// import { FaCircle, FaCircleCheck } from "react-icons/fa6";
+
 import { TbCircleDotted } from "react-icons/tb";
 
 const SignUp = () => {
@@ -23,7 +23,7 @@ const SignUp = () => {
 
   const { updateUser } = useContext(UserContext);
 
-  // Handle Sign Up Form Submit
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -54,11 +54,10 @@ const SignUp = () => {
 
     setError("");
 
-    // SignUp API Call with Image Upload
+    
     try {
       let profileImageUrl = "";
 
-      // Upload profile image if exists
       if (profilePic) {
         const imageFormData = new FormData();
         imageFormData.append("image", profilePic);

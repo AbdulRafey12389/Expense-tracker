@@ -13,7 +13,7 @@ const IncomeSchema = new mongoose.Schema(
     source: {
       type: String,
       required: true,
-    }, // Example: Salary, Freelance, etc.
+    }, 
     amount: {
       type: Number,
       required: true,

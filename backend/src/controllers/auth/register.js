@@ -6,13 +6,13 @@ const register = async (req, res) => {
   const { fullName, email, password, profileImageUrl } = req.body;
 
   try {
-    // Check if user already exists
+    
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Create and save new user (hashing happens in schema)
+    
     const user = await User.create({
       fullName,
       email,

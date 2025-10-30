@@ -1,14 +1,14 @@
 import Income from "../../models/income.js";
 import Expense from "../../models/expense.js";
-import { isValidObjectId, Types } from "mongoose";
+import {  Types } from "mongoose";
 
-// Dashboard Data
+
 export const getDashboardData = async (req, res) => {
   try {
     const userId = req.user.id;
     const userObjectId = new Types.ObjectId(String(userId));
 
-    // Fetch total income & expenses
+   
     const totalIncome = await Income.aggregate([
       { $match: { userId: userObjectId } },
       { $group: { _id: null, total: { $sum: "$amount" } } },
@@ -19,31 +19,30 @@ export const getDashboardData = async (req, res) => {
       { $group: { _id: null, total: { $sum: "$amount" } } },
     ]);
 
-    // Get income transactions in the last 60 days
+ 
     const last60DaysIncomeTransactions = await Income.find({
       userId,
       date: { $gte: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000) },
     }).sort({ date: -1 });
 
-    // Get total income for last 60 days
+    
     const incomeLast60Days = last60DaysIncomeTransactions.reduce(
       (sum, transaction) => sum + transaction.amount,
       0
     );
 
-    // Get expense transactions in the last 30 days
+    
     const last30DaysExpenseTransactions = await Expense.find({
       userId,
       date: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
     }).sort({ date: -1 });
 
-    // Get total expenses for last 30 days
+   
     const expensesLast30Days = last30DaysExpenseTransactions.reduce(
       (sum, transaction) => sum + transaction.amount,
       0
     );
 
-    // Fetch last 5 transactions (income + expenses)
     const lastIncomeTransactions = await Income.find({ userId })
       .sort({ date: -1 })
       .limit(5);
@@ -61,9 +60,9 @@ export const getDashboardData = async (req, res) => {
         ...txn.toObject(),
         type: "expense",
       })),
-    ].sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort latest first
+    ].sort((a, b) => new Date(b.date) - new Date(a.date)); 
 
-    // Final Response
+ 
     res.json({
       totalBalance:
         (totalIncome[0]?.total || 0) - (totalExpense[0]?.total || 0),
@@ -77,7 +76,7 @@ export const getDashboardData = async (req, res) => {
         total: incomeLast60Days,
         transactions: last60DaysIncomeTransactions,
       },
-      recentTransactions: lastTransactions.slice(0, 10), // Limit to 10 recent transactions
+      recentTransactions: lastTransactions.slice(0, 10),
     });
   } catch (error) {
     console.error("Dashboard error:", error);

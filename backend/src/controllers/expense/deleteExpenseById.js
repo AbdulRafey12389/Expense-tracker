@@ -1,6 +1,6 @@
 import Expense from "../../models/expense.js";
 
-// Delete expense
+
 export const deleteExpense = async (req, res) => {
   const userId = req.user.id;
   const { id } = req.params;

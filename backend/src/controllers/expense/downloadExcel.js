@@ -5,27 +5,27 @@ const downloadExpenseExcel = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    // ✅ Convert documents to plain objects
+    
     const expenses = await Expense.find({ userId })
       .select("category amount date -_id")
-      .lean(); // <-- This makes them plain JS objects
+      .lean(); 
 
-    // ✅ Format data for Excel
+    
     const formattedData = expenses.map((item) => ({
       Category: item.category || "N/A",
       Amount: item.amount || 0,
-      Date: new Date(item.date).toLocaleDateString("en-PK"), // readable date
+      Date: new Date(item.date).toLocaleDateString("en-PK"),
     }));
 
-    // ✅ Create workbook & sheet
+    
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
 
-    // ✅ Write to buffer (no file system)
+    
     const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
 
-    // ✅ Set headers and send
+   
     res.setHeader(
       "Content-Disposition",
       "attachment; filename=expense_details.xlsx"

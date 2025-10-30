@@ -25,9 +25,8 @@ router.post("/upload-image", upload.single("image"), async (req, res) => {
     const fileBase64 = req.file.buffer.toString("base64");
     const fileDataUri = `data:${req.file.mimetype};base64,${fileBase64}`;
 
-    // Upload to Cloudinary
     const result = await cloudinary.uploader.upload(fileDataUri, {
-      folder: "profile_images", // optional folder in Cloudinary
+      folder: "profile_images", 
     });
 
     return res.status(200).json({

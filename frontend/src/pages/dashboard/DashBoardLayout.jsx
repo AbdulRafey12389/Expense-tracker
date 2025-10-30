@@ -29,9 +29,7 @@ const Layout = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
       <div className="w-64 bg-gradient-to-br from-purple-600 to-purple-800 text-white flex flex-col">
-        {/* Sidebar Header */}
         <div className="p-6 border-b border-purple-500 mb-4">
           <h1 className="text-2xl font-bold mb-4">Expense Tracker</h1>
           <div className="flex items-center space-x-3">
@@ -55,9 +53,7 @@ const Layout = () => {
           </div>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 px-4 space-y-2">
-          {/* Dashboard */}
           <button
             onClick={() => handleNavigation("/dashboard")}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
@@ -70,7 +66,6 @@ const Layout = () => {
             <span className="font-medium">Dashboard</span>
           </button>
 
-          {/* Income */}
           <button
             onClick={() => handleNavigation("/income")}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
@@ -83,7 +78,6 @@ const Layout = () => {
             <span className="font-medium">Income</span>
           </button>
 
-          {/* Expense */}
           <button
             onClick={() => handleNavigation("/expense")}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
@@ -96,10 +90,8 @@ const Layout = () => {
             <span className="font-medium">Expense</span>
           </button>
 
-          {/* Divider */}
           <div className="border-t border-purple-500 my-4"></div>
 
-          {/* Logout */}
           <button
             onClick={handleLogout}
             className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-purple-100 hover:bg-red-500 hover:text-white transition-all duration-200"
@@ -110,7 +102,6 @@ const Layout = () => {
         </nav>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 overflow-auto">
         <Outlet />
       </div>

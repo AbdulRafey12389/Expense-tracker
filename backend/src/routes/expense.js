@@ -6,7 +6,7 @@ import downloadExpenseExcel from "../controllers/expense/downloadExcel.js";
 
 const router = express.Router();
 
-// Apply routes
+
 router.post("/add", addExpense);
 router.get("/get", getAllExpenses);
 router.get("/download-excel", downloadExpenseExcel);

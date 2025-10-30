@@ -83,7 +83,7 @@ const Income = () => {
     return `${day}${suffix} ${month} ${year}`;
   };
 
-  // Calculate total income
+
   const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
 
   if (loading) {
@@ -282,7 +282,7 @@ const Income = () => {
   );
 };
 
-// Add Income Form Component
+
 const AddIncomeForm = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     source: "",

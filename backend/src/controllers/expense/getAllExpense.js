@@ -1,6 +1,6 @@
 import Expense from "../../models/expense.js";
 
-// Get all expenses for a user
+
 export const getAllExpenses = async (req, res) => {
   const userId = req.user.id;
 

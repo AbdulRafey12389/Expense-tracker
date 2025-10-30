@@ -1,6 +1,6 @@
 import Income from "../../models/income.js";
 
-// Delete income
+
 export const deleteIncomeById = async (req, res) => {
   const userId = req.user.id;
   const { id } = req.params;

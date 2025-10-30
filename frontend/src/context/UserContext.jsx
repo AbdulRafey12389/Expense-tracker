@@ -9,7 +9,7 @@ const UserProvider = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  // Save user to localStorage whenever it changes
+  
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));

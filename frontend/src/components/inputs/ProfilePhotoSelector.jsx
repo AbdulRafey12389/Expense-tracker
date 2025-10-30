@@ -7,10 +7,10 @@ const ProfilePhotoSelector = ({ setImage }) => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // Update the image state
+      
       setImage(file);
 
-      // Generate preview URL from the file
+     
       const preview = URL.createObjectURL(file);
       setPreviewUrl(preview);
     }
@@ -19,7 +19,7 @@ const ProfilePhotoSelector = ({ setImage }) => {
   const handleRemoveImage = () => {
     setImage(null);
     setPreviewUrl(null);
-    // Clear the file input
+    
     if (inputRef.current) {
       inputRef.current.value = "";
     }
